@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ESG Materiality Matrix</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div style="width: 800px;">
+    <canvas id="scatterPlot"></canvas>
+  </div>
+
+  <script>
+    // Sample data (replace this with your actual data)
+    const data = [
+      { category: 'Social', topic: 'Health & Safety', a: 4.90, b: 4.81, totalScore: 23.58 },
+      { category: 'Governance', topic: 'Ethics and values', a: 4.90, b: 4.74, totalScore: 23.22 },
+      { category: 'Governance', topic: 'Anti-corruption policy and procedures', a: 4.95, b: 4.49, totalScore: 22.21 },
+      { category: 'Governance', topic: 'Financial performance and transparency', a: 4.55, b: 4.61, totalScore: 20.97 },
+      { category: 'Governance', topic: 'Whistleblower protection', a: 4.55, b: 4.48, totalScore: 20.39 },
+      { category: 'Social', topic: 'Customer Privacy and Data Protection', a: 4.80, b: 4.46, totalScore: 21.42 },
+      { category: 'Social', topic: 'Employee engagement & retention', a: 4.30, b: 4.62, totalScore: 19.85 },
+      { category: 'Governance', topic: 'Supplier chain management', a: 4.25, b: 4.47, totalScore: 19.00 },
+      { category: 'Social', topic: 'Human Rights policies and Practices', a: 4.40, b: 4.41, totalScore: 19.43 },
+      { category: 'Environment', topic: 'GHG Emissions', a: 4.15, b: 4.46, totalScore: 18.49 },
+      { category: 'Governance', topic: 'Cybersecurity and data privacy', a: 4.55, b: 4.41, totalScore: 20.06 },
+      { category: 'Environment', topic: 'Waste Management', a: 4.40, b: 4.32, totalScore: 19.01 },
+      { category: 'Social', topic: 'Employee Diversity and Inclusion', a: 4.10, b: 4.28, totalScore: 17.53 },
+      { category: 'Environment', topic: 'Energy Efficiency and Renewable Energy', a: 4.45, b: 4.10, totalScore: 18.25 },
+      { category: 'Environment', topic: 'Air Quality', a: 4.45, b: 4.07, totalScore: 18.13 },
+      { category: 'Social', topic: 'Community Relations and Social Impact', a: 4.15, b: 4.07, totalScore: 16.90 },
+      { category: 'Environment', topic: 'Water Management', a: 3.95, b: 4.01, totalScore: 15.85 },
+      { category: 'Environment', topic: 'Biodiversity and Habitat Conservation', a: 3.80, b: 3.48, totalScore: 13.24 }
+    ];
+
+    // Function to create the scatter plot
+    function createScatterPlot() {
+      const scatterCanvas = document.getElementById('scatterPlot').getContext('2d');
+
+      // Separate data based on category
+      const environmentData = data.filter(item => item.category === 'Environment');
+      const socialData = data.filter(item => item.category === 'Social');
+      const governanceData = data.filter(item => item.category === 'Governance');
+
+      new Chart(scatterCanvas, {
+        type: 'scatter',
+        data: {
+          datasets: [
+            {
+              label: 'Environment',
+              data: environmentData.map(item => ({ x: item.a, y: item.b, label: item.topic })),
+              borderColor: 'green',
+              backgroundColor: 'green',
+              pointStyle: 'rect', // Use a different symbol for environment data (e.g., square)
+            },
+            {
+              label: 'Social',
+              data: socialData.map(item => ({ x: item.a, y: item.b, label: item.topic })),
+              borderColor: 'blue',
+              backgroundColor: 'blue',
+              pointStyle: 'triangle', // Use a different symbol for social data (e.g., triangle)
+            },
+            {
+              label: 'Governance',
+              data: governanceData.map(item => ({ x: item.a, y: item.b, label: item.topic })),
+              borderColor: 'red',
+              backgroundColor: 'red',
+              pointStyle: 'circle', // Use a different symbol for governance data (e.g., circle)
+            }
+          ],
+        },
+        options: {
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Aspects Important to Business',
+              },
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Aspects Important to Stakeholders',
+              },
+            },
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: context => context.dataset.data[context.dataIndex].label,
+              },
+            },
+          },
+        },
+      });
+    }
+
+    // Call the function to create the scatter plot when the page loads
+    window.onload = createScatterPlot;
+  </script>
+</body>
+</html>
